@@ -1,6 +1,6 @@
 # This Package
 
-This package provides a simple but effective LAN wide broadcast server discovery mechanism for Unity Netcode for Gameobjects.
+This package provides a simple but effective LAN-wide, broadcast, server discovery mechanism for Unity Netcode for Gameobjects.
 
 The package is a fork of the Unity [Netcode for GameObjects Extensions Network Discovery package](https://github.com/Unity-Technologies/multiplayer-community-contributions/tree/main/com.community.netcode.extensions).
 
