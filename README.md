@@ -2,11 +2,11 @@
 
 This package provides a simple but effective LAN-wide, broadcast, server discovery mechanism for Unity Netcode for Gameobjects.
 
-The package is a fork of the Unity [Netcode for GameObjects Extensions Network Discovery package](https://github.com/Unity-Technologies/multiplayer-community-contributions/tree/main/com.community.netcode.extensions).
+The package is a derivative work of the Unity [Netcode for GameObjects Extensions Network Discovery package](https://github.com/Unity-Technologies/multiplayer-community-contributions/tree/main/com.community.netcode.extensions). The Unity Community Package that was published by Unity under the MIT Licence and this package retains that licence.
 
 It has been made into a standalone package and has been updated for more recent versions of Netcode for GameObjects.
 
-The example code has been moved to a seperate test project to avoid overstuffing this package and keep things simple.
+The example code has been moved to a separate test project to avoid overstuffing this package and to keep things simple.
 
 # NetworkDiscovery
 
@@ -16,7 +16,7 @@ Under the hood network discovery uses UDP broadcasts to send a broadcast to all 
 
 > Note: Network discovery only works on LAN and might not work in some networks.
 
-TBD => Tidy up the resy
+TBD => Tidy up the rest
 
 ## ExampleNetworkDiscovery & ExampleNetworkDiscoveryHud
 
