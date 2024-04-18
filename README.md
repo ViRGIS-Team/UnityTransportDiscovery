@@ -2,7 +2,7 @@
 
 This package provides a simple but effective LAN-wide, broadcast, server discovery mechanism for Unity Netcode for Gameobjects.
 
-The package is a derivative work of the Unity [Netcode for GameObjects Extensions Network Discovery package](https://github.com/Unity-Technologies/multiplayer-community-contributions/tree/main/com.community.netcode.extensions). The Unity Community Package that was published by Unity under the MIT Licence and this package retains that licence.
+The package is a derivative work of the Unity [Netcode for GameObjects Extensions Network Discovery package](https://github.com/Unity-Technologies/multiplayer-community-contributions/tree/main/com.community.netcode.extensions). The Unity Community Package was published by Unity under the MIT Licence and this package retains that licence.
 
 It has been made into a standalone package and has been updated for more recent versions of Netcode for GameObjects.
 
