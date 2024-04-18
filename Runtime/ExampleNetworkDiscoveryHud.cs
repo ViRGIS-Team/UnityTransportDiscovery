@@ -2,6 +2,7 @@
 using System.Net;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
+using Unity.Netcode.Community.Discovery;
 using UnityEngine;
 using Object = UnityEngine.Object;
 

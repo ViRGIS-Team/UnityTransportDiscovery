@@ -1,14 +1,15 @@
-﻿using Unity.Netcode;
-using UnityEngine;
+﻿
 
-public struct DiscoveryResponseData: INetworkSerializable
-{
-    public ushort Port;
-
-    public string ServerName;
-    public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+namespace Unity.Netcode.Community.Discovery {
+    public struct DiscoveryResponseData: INetworkSerializable
     {
-        serializer.SerializeValue(ref Port);
-        serializer.SerializeValue(ref ServerName);
+        public ushort Port;
+
+        public string ServerName;
+        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        {
+            serializer.SerializeValue(ref Port);
+            serializer.SerializeValue(ref ServerName);
+        }
     }
 }
