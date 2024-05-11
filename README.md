@@ -1,3 +1,6 @@
+[![openupm](https://img.shields.io/npm/v/com.community.netcode.networkdiscovery?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.community.netcode.networkdiscovery/)
+
+
 # This Package
 
 This package provides a simple but effective LAN-wide, broadcast, server discovery mechanism for Unity Netcode for Gameobjects.
@@ -6,7 +9,21 @@ The package is a derivative work of the Unity [Netcode for GameObjects Extension
 
 It has been made into a standalone package and has been updated for more recent versions of Netcode for GameObjects.
 
-The example code has been moved to a separate test project to avoid overstuffing this package and to keep things simple.
+The example code has been moved to a separate test project to avoid overstuffing this package and to keep things simple. See this project - which is what we use to test the package https://github.com/ViRGIS-Team/UD-Test-Project
+
+# Installation
+
+This is a UPM package and can be installed from the Github repository or from [OpenUPM](https://openupm.com/packages/com.community.netcode.networkdiscovery/)
+
+# Port Ranges and Multiple Servers on the same IP address / machine
+
+As of version 1.1.0, This package uses IP Port ranges.
+
+The component asks for a Port Range Start (default 47770) and a Range Size (default 10).
+
+When the server starts, it searches for a free port in the range (which in the default case is 47770 - 47779) and uses that port. This means that you can have multiple servers on the same IP address and the servers do NOT need to aware of each other, they just search for an unused port at the IP level.
+
+The clients broadcast on ALL ports in the Port Range, to able to get responses from all servers. 
 
 # NetworkDiscovery
 
