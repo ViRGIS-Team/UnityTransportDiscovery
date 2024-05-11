@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using Unity.Collections;
 using UnityEngine;
@@ -20,7 +21,8 @@ namespace Unity.Netcode.Community.Discovery {
 
         UdpClient m_Client;
 
-        [SerializeField] ushort m_Port = 47777;
+        [SerializeField] ushort portRangeStart = 47770;
+        [SerializeField] int portRange = 10;
 
         // This is long because unity inspector does not like ulong.
         [SerializeField]
@@ -63,7 +65,7 @@ namespace Unity.Netcode.Community.Discovery {
                 throw new InvalidOperationException("Cannot send client broadcast while not running in client mode. Call StartClient first.");
             }
 
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Broadcast, m_Port);
+
 
             using (FastBufferWriter writer = new FastBufferWriter(1024, Allocator.Temp, 1024 * 64))
             {
@@ -76,7 +78,14 @@ namespace Unity.Netcode.Community.Discovery {
                 try
                 {
                     // This works because PooledBitStream.Get resets the position to 0 so the array segment will always start from 0.
-                    m_Client.SendAsync(data, data.Length, endPoint);
+
+                    // Send broadcast requests to all ip addresses in the range
+
+                    for (int i = 0; i < portRange; i++)
+                    {
+                        IPEndPoint endPoint = new(IPAddress.Broadcast, (ushort)(portRangeStart + i));
+                        m_Client.SendAsync(data, data.Length, endPoint);
+                    }
                 }
                 catch (Exception e)
                 {
@@ -145,8 +154,25 @@ namespace Unity.Netcode.Community.Discovery {
             IsServer = isServer;
             IsClient = !isServer;
 
+
             // If we are not a server we use the 0 port (let udp client assign a free port to us)
-            var port = isServer ? m_Port : 0;
+            ushort port = 0;
+
+            // for a server search the Port range to look for a free port
+            if (IsServer)
+            {
+                IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
+                IPEndPoint[] UDPendpoints = properties.GetActiveUdpListeners();
+                for (int i = 0; i < portRange; i++)
+                {
+                    port = (ushort)(portRangeStart + i);
+                    if (Array.Find<IPEndPoint>(UDPendpoints, ep =>
+                    {
+                        return ep.Port == port;
+                    }) == null) break;
+                }
+            }
+           
 
             m_Client = new UdpClient(port) {EnableBroadcast = true, MulticastLoopback = false};
 
