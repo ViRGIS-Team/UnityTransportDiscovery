@@ -9,7 +9,7 @@ The package is a derivative work of the Unity [Netcode for GameObjects Extension
 
 It has been made into a standalone package and has been updated for more recent versions of Netcode for GameObjects.
 
-The example code has been moved to a separate test project to avoid overstuffing this package and to keep things simple.
+The example code has been moved to a separate test project to avoid overstuffing this package and to keep things simple. See this project - which is what we use to test the package https://github.com/ViRGIS-Team/UD-Test-Project
 
 # Installation
 
