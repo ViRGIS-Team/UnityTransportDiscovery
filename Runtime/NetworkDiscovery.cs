@@ -161,15 +161,22 @@ namespace Unity.Netcode.Community.Discovery {
             // for a server search the Port range to look for a free port
             if (IsServer)
             {
-                IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
-                IPEndPoint[] UDPendpoints = properties.GetActiveUdpListeners();
-                for (int i = 0; i < portRange; i++)
+                if (portRange == 1)
                 {
-                    port = (ushort)(portRangeStart + i);
-                    if (Array.Find<IPEndPoint>(UDPendpoints, ep =>
+                    // If port range is zero - fix the part to the defined value regardless - this reproduces the legacy behaviour
+                    port = portRangeStart;
+                } else
+                {
+                    IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
+                    IPEndPoint[] UDPendpoints = properties.GetActiveUdpListeners();
+                    for (int i = 0; i < portRange; i++)
                     {
-                        return ep.Port == port;
-                    }) == null) break;
+                        port = (ushort)(portRangeStart + i);
+                        if (Array.Find<IPEndPoint>(UDPendpoints, ep =>
+                        {
+                            return ep.Port == port;
+                        }) == null) break;
+                    }
                 }
             }
            
