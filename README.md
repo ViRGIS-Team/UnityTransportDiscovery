@@ -23,7 +23,11 @@ The component asks for a Port Range Start (default 47770) and a Range Size (defa
 
 When the server starts, it searches for a free port in the range (which in the default case is 47770 - 47779) and uses that port. This means that you can have multiple servers on the same IP address and the servers do NOT need to aware of each other, they just search for an unused port at the IP level.
 
-The clients broadcast on ALL ports in the Port Range, to able to get responses from all servers. 
+The clients broadcast on ALL ports in the Port Range, to able to get responses from all servers.
+
+If you want to retain the legacy behaviour, set the Port Range Start to the port you want and the Port Range size to 1. This will assign the port and will not check if the port is in use.
+
+> Note: Currently this legacy setting (i.e. Port Range Size of 1) is the only mode supported on MacOS and Linux because of a bug in Mono.
 
 # NetworkDiscovery
 
