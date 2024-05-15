@@ -27,8 +27,6 @@ The clients broadcast on ALL ports in the Port Range, to able to get responses f
 
 If you want to retain the legacy behaviour, set the Port Range Start to the port you want and the Port Range size to 1. This will assign the port and will not check if the port is in use.
 
-> Note: Currently this legacy setting (i.e. Port Range Size of 1) is the only mode supported on MacOS and Linux because of a bug in Mono.
-
 # NetworkDiscovery
 
 Network discovery allows clients to find active game servers in the same local area network without going through the hassle of figuring out the servers IP and passing it to other player.
