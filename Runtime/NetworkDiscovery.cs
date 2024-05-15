@@ -97,7 +97,7 @@ namespace Unity.Netcode.Community.Discovery {
         /// <summary>
         /// Starts the discovery in server mode which will respond to client broadcasts searching for servers.
         /// </summary>
-        public void StartServer()
+        public virtual void StartServer()
         {
             StartDiscovery(true);
         }
@@ -105,12 +105,12 @@ namespace Unity.Netcode.Community.Discovery {
         /// <summary>
         /// Starts the discovery in client mode. <see cref="ClientBroadcast"/> can be called to send out broadcasts to servers and the client will actively listen for responses.
         /// </summary>
-        public void StartClient()
+        public virtual void StartClient()
         {
             StartDiscovery(false);
         }
 
-        public void StopDiscovery()
+        public virtual void StopDiscovery()
         {
             IsClient = false;
             IsServer = false;
@@ -159,33 +159,54 @@ namespace Unity.Netcode.Community.Discovery {
             ushort port = 0;
 
             // for a server search the Port range to look for a free port
-            if (IsServer)
+            try
             {
-                if (portRange == 1)
+                if (IsServer)
                 {
-                    // If port range is zero - fix the part to the defined value regardless - this reproduces the legacy behaviour
-                    port = portRangeStart;
-                } else
-                {
-                    IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
-                    IPEndPoint[] UDPendpoints = properties.GetActiveUdpListeners();
-                    for (int i = 0; i < portRange; i++)
+                    if (portRange == 1)
                     {
-                        port = (ushort)(portRangeStart + i);
-                        if (Array.Find<IPEndPoint>(UDPendpoints, ep =>
+                        // If port range is zero - fix the part to the defined value regardless - this reproduces the legacy behaviour
+                        port = portRangeStart;
+                    }
+                    else
+                    {
+                        IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
+                        IPEndPoint[] UDPendpoints = properties.GetActiveUdpListeners();
+                        for (int i = 0; i < portRange; i++)
                         {
-                            return ep.Port == port;
-                        }) == null) break;
+                            port = (ushort)(portRangeStart + i);
+                            if (Array.Find<IPEndPoint>(UDPendpoints, ep =>
+                            {
+                                return ep.Port == port;
+                            }) == null) break;
+                        }
                     }
                 }
+                m_Client = new UdpClient(port) { EnableBroadcast = true, MulticastLoopback = false };
             }
-           
-
-            m_Client = new UdpClient(port) {EnableBroadcast = true, MulticastLoopback = false};
-
+            catch (NotImplementedException)
+            {
+                for (int i = 0; i < portRange; i++)
+                {
+                    port = (ushort)(portRangeStart + i);
+                    try
+                    {
+                        m_Client = new UdpClient(port) { EnableBroadcast = true, MulticastLoopback = false };
+                    }
+                    catch (Exception)
+                    {
+                        // do nothing - assuming this is a port clash
+                        continue;
+                    }
+                    // if we get here - it worked
+                    break;
+                }
+            }
             _ = ListenAsync(isServer ? ReceiveBroadcastAsync : new Func<Task>(ReceiveResponseAsync));
 
             IsRunning = true;
+
+            Debug.Log($"NetworkDiscovery : {(IsServer ? "Server" : "Client")} started on port {port}");
         }
 
         async Task ListenAsync(Func<Task> onReceiveTask)
